@@ -6,7 +6,13 @@ const tigerfaceUtils = `import { TestUtils, Simulate } from '@tigerface/lwc-test
 
 function getChildName(child) {
   const camel = snakeToCamelCase(child);
-  return lowerCaseFirstLetter(camel.slice(1));
+
+  if (child.includes('lightning')) {
+    return camel;
+  } else {
+    // remove namespace
+    return lowerCaseFirstLetter(camel.slice(1));
+  }
 }
 
 function buildMockComponentImports(imports) {

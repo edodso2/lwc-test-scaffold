@@ -1,6 +1,5 @@
 // @ts-ignore
 import { createElement } from "lwc"
-import { TestUtils, Simulate } from "@tigerface/lwc-test-utils"
 
 import TestComponent from "c/testComponent"
 
@@ -17,7 +16,7 @@ const TEST = ""
 function setupTest() {
   // create element
   const element = createElement("c-test-component", {
-    is: Component
+    is: TestComponent
   })
 
   // set elem props
@@ -26,15 +25,8 @@ function setupTest() {
   // add elem to body
   document.body.appendChild(element)
 
-  // event listener mocks
-  const testEventListener = jest.fn()
-
-  // add event listener mocks
-  element.addEventListener("test", testEventListener)
-
   return {
-    element,
-    testEventListener
+    element
   }
 }
 

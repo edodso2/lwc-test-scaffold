@@ -106,7 +106,7 @@ const templateBuilder = (
   template = template.replace(/\$mockEventListenersTemplate\$/g, mockEventListenersTemplate);
   template = template.replace(/\$testSetupReturn\$/g, testSetupReturn);
 
-  template = prettier.format(template, { semi: false, parser: "babel" });
+  template = prettier.format(template, { parser: "babel" });
 
   return template;
 };

@@ -4,7 +4,7 @@
   "description": "Generate an opionated test file for a component based on CLI options.",
   "main": "index.js",
   "bin": {
-    "scaffoldTest": "./index.js"
+    "lwc-test-scaffold": "./index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

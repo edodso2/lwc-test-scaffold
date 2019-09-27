@@ -15,7 +15,7 @@ function buildMockComponentImports(imports) {
 
 function buildChildrenQueries(children) {
   const childQueries = children.map(child => `\tconst ${getChildName(child)}El = element.shadowRoot.querySelector('${child}');`).join('\n');
-  return `// get child elemnts for assetions\n${childQueries}`;
+  return `// get child elements for assertions\n${childQueries}`;
 };
 
 function buildEventListeners(events) {

@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Generate an opionated test file for a component based on CLI options.",
   "main": "index.js",
+  "bin": {
+    "scaffoldTest": "./index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

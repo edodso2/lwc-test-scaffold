@@ -1,0 +1,43 @@
+<template>
+
+  <!-- Popver -->
+  <c-datatable-popover
+    visible={visible}
+    target={target}
+    show-footer={multilineMode}
+    onclickoutside={handleClickOutside}>
+
+    <!-- Popover Body -->
+    <div slot="popoverBody">
+
+      <!-- Edit Input -->
+      <lightning-input
+        name="editCell"
+        value={form.valueInput}
+        label="Edit Cell Value"
+        variant="label-hidden"
+        onchange={handleInputChange}
+        onkeyup={handleKeyUp}>
+      </lightning-input>
+
+      <!-- Multiline Edit Checkbox -->
+      <lightning-input
+        if:true={multilineMode}
+        type="checkbox"
+        name="multiline"
+        label={multilineCheckboxLabel}
+        checked={form.multilineCheckbox}
+        onchange={handleMultilineCheckboxChange}>
+      </lightning-input>
+
+    </div>
+
+    <!-- Popover Footer -->
+    <div slot="popoverFooter" class="slds-grid slds-grid_align-end">
+      <lightning-button label="Cancel" onclick={handleMultilineCancel}></lightning-button>
+      <lightning-button label="Apply" variant="brand" onclick={handleMultilineApply} style="margin-left: 0.25rem;"></lightning-button>
+    </div>
+
+  </c-datatable-popover>
+
+</template>

@@ -1,0 +1,17 @@
+{
+  "name": "@tigerface/lwc-test-scaffold",
+  "version": "0.0.1",
+  "description": "Generate an opionated test file for a component based on CLI options.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^7.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^1.18.2"
+  }
+}

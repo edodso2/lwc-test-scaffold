@@ -58,7 +58,6 @@ const templateBuilder = (
   mockChildComponents,
   childComponentImports
 ) => {
-  console.log(children);
   let tigerfaceUtilsTpl;
   let mockComponentImportsTemplate;
   let childElsTemplate;

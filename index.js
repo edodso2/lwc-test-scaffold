@@ -134,7 +134,7 @@ inquirer
       childComponentImports
     );
 
-    const componentDir = lwcRoot + ' + componentFileName';
+    const componentDir = lwcRoot + '/' + componentFileName;
     const testDir = componentDir + '/__tests__';
   
     if (!fs.existsSync(testDir)) {

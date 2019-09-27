@@ -18,7 +18,7 @@ function setupTest() {
 
   // create element
   const element = createElement('$componentNodeName$', {
-    is: Component
+    is: $componentName$
   });
 
   // set elem props

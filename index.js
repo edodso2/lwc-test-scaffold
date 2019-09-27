@@ -62,7 +62,6 @@ const questions = [
     type: 'input',
     name: 'componentName',
     message: 'What is the component class name?',
-    default: 'TestComponent'
   },
   {
     type: 'confirm',
@@ -124,7 +123,7 @@ inquirer
       } while (m);
     }
 
-    templateBuilder(
+    const template = templateBuilder(
       componentName,
       componentFileName,
       componentNodeName,
@@ -134,4 +133,13 @@ inquirer
       mockChildComponents,
       childComponentImports
     );
+
+    const componentDir = lwcRoot + ' + componentFileName';
+    const testDir = componentDir + '/__tests__';
+  
+    if (!fs.existsSync(testDir)) {
+      fs.mkdirSync(testDir);
+    }
+  
+    fs.writeFileSync(testDir + '/' + componentFileName + '.test.js', template);
   });

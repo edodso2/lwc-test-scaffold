@@ -103,14 +103,7 @@ const templateBuilder = (
 
   template = prettier.format(template, { semi: false, parser: "babel" });
 
-  const componentDir = __dirname + '/test/force-app/main/default/lwc/' + componentFileName;
-  const testDir = componentDir + '/__tests__';
-
-  if (!fs.existsSync(testDir)) {
-    fs.mkdirSync(testDir);
-  }
-
-  fs.writeFileSync(testDir + '/' + componentFileName + '.test.js', template);
+  return template;
 };
 
 module.exports = templateBuilder;

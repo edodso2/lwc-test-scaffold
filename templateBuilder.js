@@ -1,26 +1,20 @@
 const fs = require('fs');
 const prettier = require('prettier');
-const { snakeToCamelCase, lowerCaseFirstLetter } = require('./utils');
+const { snakeToCamelCase } = require('./utils');
 
 const tigerfaceUtils = `import { TestUtils, Simulate } from '@tigerface/lwc-test-utils';`;
 
-function getChildName(child) {
-  const camel = snakeToCamelCase(child);
-
-  if (child.includes('lightning')) {
-    return camel;
-  } else {
-    // remove namespace
-    return lowerCaseFirstLetter(camel.slice(1));
-  }
+function getChildName(child, namespace) {
+  child = child.replace(namespace + '-', '');
+  return snakeToCamelCase(child);
 }
 
 function buildMockComponentImports(imports) {
   return imports.map(cImport => `jest.mock('${cImport}');`).join('\n');
 }
 
-function buildChildrenQueries(children) {
-  const childQueries = children.map(child => `\tconst ${getChildName(child)}El = element.shadowRoot.querySelector('${child}');`).join('\n');
+function buildChildrenQueries(children, namespace) {
+  const childQueries = children.map(child => `\tconst ${getChildName(child, namespace)}El = element.shadowRoot.querySelector('${child}');`).join('\n');
   return `// get child elements for assertions\n${childQueries}`;
 };
 
@@ -31,12 +25,12 @@ function buildEventListeners(events) {
   return `// event listener mocks\n${eventListeners}\n\n\t// add event listener mocks\n${addEventListeners}`;
 };
 
-function buildTestSetupReturn(children, events) {
+function buildTestSetupReturn(children, events, namespace) {
   let childVarNames;
   let eventVarNames;
 
   if (children.length) {
-    childVarNames = children.map(child => `\t\t${getChildName(child)}El`).join(',\n');
+    childVarNames = children.map(child => `\t\t${getChildName(child, namespace)}El`).join(',\n');
   }
 
   if (events.length) {
@@ -55,6 +49,7 @@ function buildTestSetupReturn(children, events) {
 };
 
 const templateBuilder = (
+  namespace,
   componentName,
   componentFileName,
   componentNodeName,
@@ -68,7 +63,7 @@ const templateBuilder = (
   let mockComponentImportsTemplate;
   let childElsTemplate;
   let mockEventListenersTemplate;
-  let testSetupReturn = buildTestSetupReturn(children, events);
+  let testSetupReturn = buildTestSetupReturn(children, events, namespace);
 
   let template = fs.readFileSync(__dirname + '/template.js', 'utf8');
 
@@ -89,7 +84,7 @@ const templateBuilder = (
   }
 
   if (children.length) {
-    childElsTemplate = buildChildrenQueries(children);
+    childElsTemplate = buildChildrenQueries(children, namespace);
   } else {
     childElsTemplate = '';
   }

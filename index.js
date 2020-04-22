@@ -7,11 +7,18 @@ const inquirer = require('inquirer');
 const templateBuilder = require('./templateBuilder');
 const { camelToSnakeCase, snakeToCamelCase, lowerCaseFirstLetter } = require('./utils');
 
+const DEFAULT_NAMESPACE = 'c';
+
 function getProjectRoot() {
   let sfdxProjectConfig = fs.readFileSync('./sfdx-project.json', 'utf8');
   sfdxProjectConfig = JSON.parse(sfdxProjectConfig);
 
-  return './' + sfdxProjectConfig.packageDirectories[0].path + '/main/default/lwc';
+  const namespace = sfdxProjectConfig.namespace.trim() === '' ? DEFAULT_NAMESPACE : sfdxProjectConfig.namespace;
+
+  return {
+    namespace,
+    lwcRoot: './' + sfdxProjectConfig.packageDirectories[0].path + '/main/default/lwc'
+  };
 }
 
 function convertChildToImportPath(nodeName) {
@@ -94,11 +101,11 @@ inquirer
   .then(answers => {
     const { componentName, useTigerfaceUtils, children, events, mockChildComponents } = answers;
 
-    // get project root from sfdx-package.json
-    const lwcRoot = getProjectRoot();
+    // get project info from sfdx-package.json
+    const { lwcRoot, namespace } = getProjectRoot();
 
     const componentFileName = lowerCaseFirstLetter(componentName);
-    const componentNodeName = 'c-' + camelToSnakeCase(componentName);
+    const componentNodeName = namespace + '-' + camelToSnakeCase(componentName);
 
     const childComponentRegex = /<([a-z]+(-?[a-z]+)*)/g;
 
@@ -124,6 +131,7 @@ inquirer
     }
 
     const template = templateBuilder(
+      namespace,
       componentName,
       componentFileName,
       componentNodeName,
@@ -136,10 +144,10 @@ inquirer
 
     const componentDir = lwcRoot + '/' + componentFileName;
     const testDir = componentDir + '/__tests__';
-  
+
     if (!fs.existsSync(testDir)) {
       fs.mkdirSync(testDir);
     }
-  
+
     fs.writeFileSync(testDir + '/' + componentFileName + '.test.js', template);
   });
